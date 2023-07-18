@@ -2,16 +2,38 @@ import Input from "../UI/Input";
 import classes from "./LoginForm.module.css";
 import { useRef } from "react";
 
-const LoginForm = () => {
+const LoginForm = props => {
 	const nameInputRef = useRef();
 	const passwordInputRef = useRef();
+
 	const enterLoginHandler = event => {
 		event.preventDefault();
 		const enteredName = nameInputRef.current.value;
 		const enteredPassword = passwordInputRef.current.value;
+		const isCreate = event.target.id === "newAccount";
+
+		props.onLogin(enteredName, enteredPassword, isCreate);
 	};
+
+	const renderBtnLogin = (
+		<span>
+			<button
+				id='login'
+				className={classes.btnLogin}
+				onClick={enterLoginHandler}>
+				Login
+			</button>
+			<button
+				id='newAccount'
+				className={classes.btnLogin}
+				onClick={enterLoginHandler}>
+				Create Account
+			</button>
+		</span>
+	);
+
 	return (
-		<form onSubmit={enterLoginHandler}>
+		<form>
 			<Input
 				ref={nameInputRef}
 				label='Name'
@@ -30,7 +52,8 @@ const LoginForm = () => {
 				}}
 				className={classes.inputLogin}
 			/>
-			<button className={classes.btnLogin}>Login</button>
+
+			{props.onLoading ? <p>Loading... </p> : renderBtnLogin}
 		</form>
 	);
 };

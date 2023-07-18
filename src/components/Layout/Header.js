@@ -1,17 +1,22 @@
-import { Fragment } from "react";
+import { Fragment, useState } from "react";
 
 import HeaderCartButton from "./HeaderCartButton";
 import mealsImage from "../../assets/meals.jpg";
 import classes from "./Header.module.css";
-import LoginForm from "../Login/LoginForm";
+import Login from "../LoginF/Login";
 
 const Header = props => {
+	const [cartStatus, setCartStatus] = useState(false);
+	const showCartButton = status => {
+		setCartStatus(status);
+	};
+
 	return (
 		<Fragment>
 			<header className={classes.header}>
 				<h1>ReactMeals</h1>
-				<LoginForm />
-				{/* <HeaderCartButton onClick={props.onShowCart} /> */}
+				<Login onLoginStatus={showCartButton} />
+				{cartStatus && <HeaderCartButton onClick={props.onShowCart} />}
 			</header>
 			<div className={classes["main-image"]}>
 				<img src={mealsImage} alt='A table full of delicious food!' />
