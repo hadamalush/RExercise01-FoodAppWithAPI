@@ -1,18 +1,28 @@
 import Input from "../UI/Input";
 import classes from "./LoginForm.module.css";
-import { useRef } from "react";
+import { useContext, useState } from "react";
+import LoginContext from "../../store/login-context";
 
 const LoginForm = props => {
-	const nameInputRef = useRef();
-	const passwordInputRef = useRef();
+	const [enteredNameLogin, setNameLogin] = useState("");
+	const [enteredPasswordLogin, setPasswordLogin] = useState("");
+	const lgnCtx = useContext(LoginContext);
+
+	const changeNameHandler = event => {
+		setNameLogin(event.target.value);
+	};
+	const changePasswordHandler = event => {
+		setPasswordLogin(event.target.value);
+	};
 
 	const enterLoginHandler = event => {
 		event.preventDefault();
-		const enteredName = nameInputRef.current.value;
-		const enteredPassword = passwordInputRef.current.value;
 		const isCreate = event.target.id === "newAccount";
+		console.log(isCreate);
+		setNameLogin("");
+		setPasswordLogin("");
 
-		props.onLogin(enteredName, enteredPassword, isCreate);
+		props.onLogin(enteredNameLogin, enteredPasswordLogin, isCreate);
 	};
 
 	const renderBtnLogin = (
@@ -35,24 +45,25 @@ const LoginForm = props => {
 	return (
 		<form>
 			<Input
-				ref={nameInputRef}
 				label='Name'
 				input={{
 					id: "name",
+					value: enteredNameLogin,
 					type: "text",
+					onChange: changeNameHandler,
 				}}
 				className={classes.inputLogin}
 			/>
 			<Input
-				ref={passwordInputRef}
 				label='Password'
 				input={{
 					id: "password",
+					value: enteredPasswordLogin,
 					type: "password",
+					onChange: changePasswordHandler,
 				}}
 				className={classes.inputLogin}
 			/>
-
 			{props.onLoading ? <p>Loading... </p> : renderBtnLogin}
 		</form>
 	);

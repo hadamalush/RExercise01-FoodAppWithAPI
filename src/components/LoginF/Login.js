@@ -1,13 +1,14 @@
 import LoginForm from "./LoginForm";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import useHttp from "../hooks/use-http";
-
 import classes from "./Login.module.css";
+import LoginContext from "../../store/login-context";
 
 const Login = props => {
 	const { isLoading, error, sendRequest: loginRequest } = useHttp();
 	const [loginStatus, setLoginStatus] = useState(false);
 	const [userData, setUserData] = useState({});
+	const lgnCtx = useContext(LoginContext);
 
 	const dataLogin = (name, password, isCreate) => {
 		const checkDataUsers = dataUsers => {
@@ -26,6 +27,8 @@ const Login = props => {
 
 			setLoginStatus(typeof listUsers === "object");
 			setUserData(listUsers);
+			console.log("NAME: ", name);
+			lgnCtx.onLogin(name);
 
 			console.log("loginStatus ", loginStatus);
 			props.onLoginStatus(loginStatus);
@@ -48,10 +51,16 @@ const Login = props => {
 		}
 	};
 
+	const logoutHandler = () => {
+		setLoginStatus(false);
+	};
+
 	useEffect(() => {
-		console.log("loginStatus ", loginStatus);
 		props.onLoginStatus(loginStatus);
-	}, [loginStatus]);
+		if (loginStatus) {
+			lgnCtx.onLogin(userData.name);
+		}
+	}, [loginStatus, lgnCtx, props]);
 
 	const allForms = (
 		<LoginForm onLogin={dataLogin} onLoading={isLoading} error={error} />
@@ -62,10 +71,14 @@ const Login = props => {
 			{loginStatus ? (
 				<p>
 					Logged as <span className={classes.activeUser}>{userData.name}</span>
+					<button className={classes.btnLogout} onClick={logoutHandler}>
+						Logout
+					</button>
 				</p>
 			) : (
 				allForms
 			)}
+			{props.isCreate && <p>Account has been created</p>}
 		</React.Fragment>
 	);
 };
