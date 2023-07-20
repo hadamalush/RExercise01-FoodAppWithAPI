@@ -15,6 +15,15 @@ const Cart = props => {
 	const hasItems = cartCtx.items.length > 0;
 	const orderItems = cartCtx.items;
 
+	const loadedNameOrders = [];
+	let loadedPrice = cartCtx.totalAmount;
+
+	orderItems.map(item => {
+		loadedNameOrders.push(
+			"DinnerName: " + item.name + " | Amount: " + item.amount
+		);
+	});
+
 	const cartItemRemoveHandler = id => {
 		cartCtx.removeItem(id);
 	};
@@ -60,12 +69,12 @@ const Cart = props => {
 
 		checkUserIdRequest({
 			url:
-				"https://react-food-app-cffd3-default-rtdb.firebaseio.com/login" +
+				"https://react-food-app-cffd3-default-rtdb.firebaseio.com/login/" +
 				lgnCtx.nameOrderId +
-				".json",
-			method: "PATCH",
+				"/orderItems.json",
+			method: "POST",
 			headers: { "Content-Type": "application/json" },
-			body: { orderItems },
+			body: { nameList: loadedNameOrders, price: loadedPrice },
 		});
 	};
 

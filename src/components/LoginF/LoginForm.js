@@ -18,7 +18,6 @@ const LoginForm = props => {
 	const enterLoginHandler = event => {
 		event.preventDefault();
 		const isCreate = event.target.id === "newAccount";
-		console.log(isCreate);
 		setNameLogin("");
 		setPasswordLogin("");
 

@@ -21,8 +21,9 @@ const cartReducer = (state, action) => {
 		if (existingCartItem) {
 			const updatedItem = {
 				...existingCartItem,
-				amount: existingCartItem.amount + action.item.amount,
+				amount: existingCartItem.amount + 1,
 			};
+
 			updatedItems = [...state.items];
 			updatedItems[existingCartItemIndex] = updatedItem;
 		} else {
@@ -64,8 +65,13 @@ const CartProvider = props => {
 		defaultCartState
 	);
 	const [statusOrder, setStatusOrder] = useState(false);
+	const [itemOrders, setItemOrders ] = useState([]);
 
-	const applyStatusOrder = (choose) => {
+	const addOrdersHandler = (items) => {
+		setItemOrders(items);
+	}
+
+	const applyStatusOrder = choose => {
 		setStatusOrder(choose);
 	};
 
@@ -79,8 +85,10 @@ const CartProvider = props => {
 
 	const cartContext = {
 		items: cartState.items,
+		itemsOrders: itemOrders,
 		totalAmount: cartState.totalAmount,
 		statusOrder: statusOrder,
+		addItemsOrders: addOrdersHandler,
 		sendOrder: applyStatusOrder,
 		addItem: addItemToCartHandler,
 		removeItem: removeItemFromCartHandler,

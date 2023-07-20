@@ -27,10 +27,7 @@ const Login = props => {
 
 			setLoginStatus(typeof listUsers === "object");
 			setUserData(listUsers);
-			console.log("NAME: ", name);
 			lgnCtx.onLogin(name);
-
-			console.log("loginStatus ", loginStatus);
 			props.onLoginStatus(loginStatus);
 		};
 
