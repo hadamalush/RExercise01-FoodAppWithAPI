@@ -20,7 +20,7 @@ const Cart = props => {
 
 	orderItems.map(item => {
 		loadedNameOrders.push(
-			"DinnerName: " + item.name + " | Amount: " + item.amount
+			"DinnerName: " + item.name + " Amount: " + item.amount + " | "
 		);
 	});
 

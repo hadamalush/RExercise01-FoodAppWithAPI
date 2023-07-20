@@ -30,7 +30,7 @@ function App() {
 		<CartProvider>
 			<LoginProvider>
 				{cartIsShown && <Cart onClose={hideCartHandler} />}
-				{orderIsShown && <Orders onClose={showOrderHandler} />}
+				{orderIsShown && <Orders onClose={hideOrderHandler} />}
 				<Header onShowCart={showCartHandler} onShowOrders={showOrderHandler} />
 				<main>
 					<Meals />

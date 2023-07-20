@@ -4,12 +4,10 @@ import Input from "../../UI/Input";
 import classes from "./MealItemForm.module.css";
 import LoginContext from "../../../store/login-context";
 
-
 const MealItemForm = props => {
 	const [amountIsValid, setAmountIsValid] = useState(true);
 	const amountInputRef = useRef();
 	const lgnCtx = useContext(LoginContext);
-	console.log("LGNCTX-STATUS: ", lgnCtx.statusLogin);
 
 	const submitHandler = event => {
 		event.preventDefault();
@@ -43,7 +41,9 @@ const MealItemForm = props => {
 					defaultValue: "1",
 				}}
 			/>
-			<button disabled={!lgnCtx.statusLogin} className={classes.btnAddItem}>+ Add</button>
+			<button disabled={!lgnCtx.statusLogin} className={classes.btnAddItem}>
+				+ Add
+			</button>
 			{!amountIsValid && <p>Please enter a valid amount (1-5).</p>}
 		</form>
 	);

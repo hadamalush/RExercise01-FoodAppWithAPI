@@ -3,6 +3,7 @@ import useHttp from "../hooks/use-http";
 import Modal from "../UI/Modal";
 import LoginContext from "../../store/login-context";
 import CartContext from "../../store/cart-context";
+import OrdersItem from "./OrdersItem";
 import { useContext, useEffect } from "react";
 
 const Orders = props => {
@@ -24,6 +25,7 @@ const Orders = props => {
 		const loadedOrders = [];
 
 		const getOrders = dataOrders => {
+			console.log("Data orders: ", dataOrders);
 			for (const order in dataOrders) {
 				loadedOrders.push({
 					orderList: dataOrders[order].nameList,
@@ -55,32 +57,38 @@ const Orders = props => {
 
 	// const orderItems = <ul className={classes["order-items"]}>
 
-	// </ul>;
+	// </ul>
+
+	const loadedTransformedOrders = [];
+
+	console.log("cartitems:", cartCtx.itemsOrders);
 
 	cartCtx.itemsOrders.map(item => {
 		let items = "";
 		for (let i = 0; i < item.orderList.length; i++) {
-			items += item.orderList[i] + "\n";
+			items += item.orderList[i] + "\n ";
 		}
-		console.log(items);
+		loadedTransformedOrders.push({ items: items, price: item.price });
 	});
 
-	console.log(cartCtx.itemsOrders);
-	return (
-		<Modal>
-			{/* {cartItems}
-			<div className={classes.total}>
-				<span>Total Amount</span>
-				<span>{totalAmount}</span>
-			</div>
-			<div className={classes.actions}>
-				<button className={classes["button--alt"]} onClick={props.onClose}>
-					Close
-				</button>
-				
-			</div> */}
-		</Modal>
+	const listOrderItems = (
+		<ul className={classes["orders-items"]}>
+			<h1>List Orders</h1>
+			{console.log("Wywolanie UL")}
+			{loadedTransformedOrders.map(item => {
+				return (
+					<OrdersItem
+						key={Math.random()}
+						itemsList={item.items}
+						price={item.price}
+					/>
+				);
+			})}
+		</ul>
 	);
+	console.log(loadedTransformedOrders);
+
+	return <Modal onClose={props.onClose}>{listOrderItems}</Modal>;
 };
 
 export default Orders;
